@@ -1,0 +1,139 @@
+@import 'tailwindcss';
+@source '../**/*.{js,ts,jsx,tsx}';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  /* Custom Luna colors (slate-based) */
+  --color-luna-50: #f8fafc;
+  --color-luna-100: #f1f5f9;
+  --color-luna-200: #e2e8f0;
+  --color-luna-300: #cbd5e1;
+  --color-luna-400: #94a3b8;
+  --color-luna-500: #64748b;
+  --color-luna-600: #475569;
+  --color-luna-700: #334155;
+  --color-luna-800: #1e293b;
+  --color-luna-900: #0f172a;
+
+  /* Custom Sol colors (yellow/orange-based) */
+  --color-sol-50: #fefce8;
+  --color-sol-100: #fef9c3;
+  --color-sol-200: #fef08a;
+  --color-sol-300: #fde047;
+  --color-sol-400: #facc15;
+  --color-sol-500: #eab308;
+  --color-sol-600: #ca8a04;
+  --color-sol-700: #a16207;
+  --color-sol-800: #854d0e;
+  --color-sol-900: #713f12;
+
+  /* Animation definitions */
+  --animation-fade-in: fadeIn 0.5s ease-in-out;
+  --animation-slide-up: slideUp 0.5s ease-out;
+  --animation-theme-transition: themeTransition 0.3s ease-in-out;
+  --animation-gradient-x: gradient-x 15s ease infinite;
+  --animation-gradient-y: gradient-y 20s ease infinite;
+}
+
+@layer base {
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+
+    /* Luna/Sol theme variables */
+    --theme-primary: #f97316;
+    --theme-secondary: #3730a3;
+    --theme-accent: #ec4899;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --foreground-rgb: 255, 255, 255;
+      --background-start-rgb: 0, 0, 0;
+      --background-end-rgb: 0, 0, 0;
+    }
+  }
+
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: transparent;
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+@layer components {
+  .theme-transition {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .gradient-text {
+    @apply from-sol-400 via-sol-500 to-sol-600 bg-gradient-to-r bg-clip-text text-transparent;
+  }
+
+  .gradient-text-luna {
+    @apply from-luna-400 via-luna-500 to-luna-600 bg-gradient-to-r bg-clip-text text-transparent;
+  }
+
+  .animate-gradient-x {
+    animation: gradient-x 15s ease infinite;
+  }
+
+  .animate-gradient-y {
+    animation: gradient-y 20s ease infinite;
+  }
+}
+
+/* Gradient animation keyframes */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes gradient-y {
+  0%, 100% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+}
+
+@keyframes gradient-diagonal {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-lg bg-gray-400 dark:bg-gray-600;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500 dark:bg-gray-500;
+}
