@@ -6,13 +6,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:vercel": "SKIP_PAYLOAD_BUILD=true next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "type-check": "tsc --noEmit",
-    "generate:types": "PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types"
+    "generate:types": "[ -n \"$DATABASE_URI\" ] && PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types || echo 'Skipping Payload type generation - DATABASE_URI not set'",
+    "postbuild": "echo 'Build completed successfully'"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.49.0",

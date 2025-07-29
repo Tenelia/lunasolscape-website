@@ -1,18 +1,33 @@
-import { buildConfig } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import sharp from 'sharp'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
+import { buildConfig } from 'payload'
+import sharp from 'sharp'
 
-export default buildConfig({
-  // Database adapter - PostgreSQL for production
-  db: postgresAdapter({
+// Graceful handling when database is not available
+const getDatabaseAdapter = () => {
+  if (!process.env.DATABASE_URI) {
+    console.warn('DATABASE_URI not found - Payload CMS will not be available')
+    // Return a minimal adapter for build-time compatibility
+    return postgresAdapter({
+      pool: {
+        connectionString: 'postgresql://dummy:dummy@localhost:5432/dummy',
+      },
+    })
+  }
+  
+  return postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI,
     },
-  }),
+  })
+}
+
+export default buildConfig({
+  // Database adapter - PostgreSQL for production
+  db: getDatabaseAdapter(),
   
-  secret: process.env.PAYLOAD_SECRET || 'your-secret-key',
+  secret: process.env.PAYLOAD_SECRET || 'fallback-secret-key-for-build',
   
   collections: [
     // We'll define collections here
